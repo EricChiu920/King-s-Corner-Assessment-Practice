@@ -8,8 +8,8 @@ describe Pile do
   let(:top_card) { Card.new(:clubs, :jack) }
 
   describe '#initialize' do
-    it 'correctly sets the top card' do
-      expect(pile.first_card).to eq(top_card)
+    it 'correctly sets the first card' do
+      expect(pile.first_card).to eq(first_card)
     end
 
     it 'correctly sets the top card' do
@@ -19,7 +19,7 @@ describe Pile do
 
   describe '#current_value' do
     it 'returns the top card value' do
-      expect(pile.current_value).to eq(top_card.value)
+      expect(pile.current_value).to eq(11)
     end
   end
 
@@ -48,7 +48,7 @@ describe Pile do
 
     it 'rejects a card that does not have a opposite color suit' do
       expect(
-        pile.valid_play(Card.new(:spades, :ten))
+        pile.valid_play?(Card.new(:spades, :ten))
       )
     end
   end
@@ -69,22 +69,22 @@ describe Pile do
   end
 
   describe '#move_pile' do
-    it 'changes top card on valid play' do
-      let(:other_pile) { Pile.new(other_first_card, other_top_card) }
-      let(:other_first_card) { Card.new(:hearts, :ten) }
-      let(:other_top_card) { Card.new(:clubs, :five) }
+    let(:other_pile_true) { Pile.new(other_first_card_true, other_top_card_true) }
+    let(:other_first_card_true) { Card.new(:hearts, :ten) }
+    let(:other_top_card_true) { Card.new(:clubs, :five) }
 
-      pile.move_pile(other_pile)
-      expect(pile.top_card).to eq(other_top_card)
+    let(:other_pile_false) { Pile.new(other_first_card_false, other_top_card_false) }
+    let(:other_first_card_false) { Card.new(:clubs, :ten) }
+    let(:other_top_card_false) { Card.new(:hearts, :five) }
+    it 'changes top card on valid play' do
+      pile.move_pile(other_pile_true)
+      expect(pile.top_card).to eq(other_top_card_true)
     end
 
     it 'rejects an invalid play' do
-      let(:other_pile) { Pile.new(other_first_card, other_top_card) }
-      let(:other_first_card) { Card.new(:clubs, :ten) }
-      let(:other_top_card) { Card.new(:hearts, :five) }
-
-      pile.move_pile(other_pile)
-      expect(pile.top_card).to_not eq(other_top_card)
+      expect do
+        pile.move_pile(other_pile_false)
+      end.to raise_error('invalid play')
     end
   end
 end

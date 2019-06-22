@@ -3,10 +3,15 @@ require 'deck'
 require 'pile'
 
 describe Pile do
-  subject(:pile) { Pile.new(top_card) }
+  subject(:pile) { Pile.new(first_card, top_card) }
+  let(:first_card) { Card.new(:clubs, :jack) }
   let(:top_card) { Card.new(:clubs, :jack) }
 
   describe '#initialize' do
+    it 'correctly sets the top card' do
+      expect(pile.first_card).to eq(top_card)
+    end
+
     it 'correctly sets the top card' do
       expect(pile.top_card).to eq(top_card)
     end
@@ -50,24 +55,10 @@ describe Pile do
 
   describe '#play' do
     it 'changes top card on valid play' do
-      played_card = Card.new(:clubs, :seven)
+      played_card = Card.new(:diamonds, :ten)
 
       pile.play(played_card)
       expect(pile.top_card).to eq(played_card)
-    end
-
-    it 'changes current_suit on value play' do
-      pile.play(Card.new(:diamonds, :deuce))
-
-      expect(pile.current_value).to eq(:deuce)
-      expect(pile.current_suit).to eq(:diamonds)
-    end
-
-    it 'changes current_value on suit play' do
-      pile.play(Card.new(:clubs, :three))
-
-      expect(pile.current_value).to eq(:three)
-      expect(pile.current_suit).to eq(:clubs)
     end
 
     it 'rejects an invalid play' do
@@ -75,53 +66,25 @@ describe Pile do
         pile.play(Card.new(:diamonds, :seven))
       end.to raise_error('invalid play')
     end
-
-    it 'rejects an eight played this way' do
-      expect do
-        pile.play(Card.new(:diamonds, :eight))
-      end.to raise_error('must declare suit when playing eight')
-    end
   end
 
-  describe '#play_eight' do
-    it 'rejects a non-eight card' do
-      expect do
-        pile.play_eight(Card.new(:clubs, :three), :hearts)
-      end.to raise_error('must play eight')
+  describe '#move_pile' do
+    it 'changes top card on valid play' do
+      let(:other_pile) { Pile.new(other_first_card, other_top_card) }
+      let(:other_first_card) { Card.new(:hearts, :ten) }
+      let(:other_top_card) { Card.new(:clubs, :five) }
+
+      pile.move_pile(other_pile)
+      expect(pile.top_card).to eq(other_top_card)
     end
 
-    it 'accepts a played eight' do
-      played_card = Card.new(:diamonds, :eight)
-      pile.play_eight(played_card, :hearts)
+    it 'rejects an invalid play' do
+      let(:other_pile) { Pile.new(other_first_card, other_top_card) }
+      let(:other_first_card) { Card.new(:clubs, :ten) }
+      let(:other_top_card) { Card.new(:hearts, :five) }
 
-      expect(pile.top_card).to eq(played_card)
-      expect(played_card.suit).to eq(:diamonds)
-    end
-
-    it 'changes suit when an eight is played' do
-      played_card = Card.new(:diamonds, :eight)
-      pile.play_eight(played_card, :hearts)
-
-      expect(pile.current_suit).to eq(:hearts)
-    end
-
-    it 'affects what cards can be next played' do
-      played_card = Card.new(:diamonds, :eight)
-      pile.play_eight(played_card, :hearts)
-
-      expect(pile.valid_play?(Card.new(:hearts, :four))).to eq(true)
-    end
-
-    it 'does not affect suits of subsequent plays' do
-      pile.play_eight(Card.new(:diamonds, :eight), :hearts)
-
-      # play a heart, then move to clubs
-      pile.play(Card.new(:hearts, :four))
-      pile.play(Card.new(:clubs, :four))
-
-      # eight's choice of suit doesn't last forever
-      expect(pile.current_suit).to eq(:clubs)
-      expect(pile.valid_play?(Card.new(:clubs, :five))).to eq(true)
+      pile.move_pile(other_pile)
+      expect(pile.top_card).to_not eq(other_top_card)
     end
   end
 end

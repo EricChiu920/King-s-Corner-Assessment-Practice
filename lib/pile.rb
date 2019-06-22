@@ -1,5 +1,7 @@
 class Pile
-  def initialize(top_card)
+  attr_reader :first_card, :top_card
+  
+  def initialize(first_card, top_card)
   end
 
   def current_value
@@ -14,6 +16,7 @@ class Pile
   def play(card)
   end
 
-  protected
-  attr_reader :top_card
+  def move_pile(pile)
+  end
+
 end

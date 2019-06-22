@@ -11,6 +11,7 @@ class Deck
   end
 
   def empty?
+  end
 
   def take(n)
   end

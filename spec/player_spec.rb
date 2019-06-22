@@ -18,37 +18,13 @@ describe Player do
   end
 
   describe '::deal_player' do
-    it 'deals eight cards from the deck to a new player' do
+    it 'deals seven cards from the deck to a new player' do
       deck = double('deck')
       cards = double('cards')
-      expect(deck).to receive(:take).with(8).and_return(cards)
+      expect(deck).to receive(:take).with(7).and_return(cards)
 
-      player = Player.deal_player_in(deck)
+      player = Player.deal_player(deck)
       expect(player.cards).to eq(cards)
-    end
-  end
-
-  describe '#favorite suit' do
-    it 'computes the suit player has the most of' do
-      # I put a :spades here so that the test makes sure that you
-      # don't just return the alphabetically max suit.
-      cards = [
-        Card.new(:hearts, :five),
-        Card.new(:diamonds, :four),
-        Card.new(:hearts, :four),
-        Card.new(:spades, :five)
-      ]
-
-      expect(Player.new(cards).favorite_suit).to eq(:hearts)
-
-      more_cards = [
-        Card.new(:hearts, :five),
-        Card.new(:diamonds, :four),
-        Card.new(:spades, :four),
-        Card.new(:spades, :five)
-      ]
-
-      expect(Player.new(more_cards).favorite_suit).to eq(:spades)
     end
   end
 
@@ -84,19 +60,6 @@ describe Player do
           player.play_card(pile, card)
           expect(player.cards).to_not include(card)
         end
-      end
-    end
-
-    context 'with eight' do
-      let(:card) { Card.new(:spades, :eight) }
-
-      it 'plays an eight by picking the favorite suit' do
-        # **must use the `#favorite_suit` method in `#play_card`**.
-        allow(player).to receive_messages(favorite_suit: :hearts)
-        # **must call `play_eight` on the Pile**
-        expect(pile).to receive(:play_eight).with(card, :hearts)
-
-        player.play_card(pile, card)
       end
     end
   end

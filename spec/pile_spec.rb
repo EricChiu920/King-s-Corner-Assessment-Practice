@@ -69,21 +69,17 @@ describe Pile do
   end
 
   describe '#move_pile' do
-    let(:other_pile_true) { Pile.new(other_first_card_true, other_top_card_true) }
-    let(:other_first_card_true) { Card.new(:hearts, :ten) }
-    let(:other_top_card_true) { Card.new(:clubs, :five) }
-
-    let(:other_pile_false) { Pile.new(other_first_card_false, other_top_card_false) }
-    let(:other_first_card_false) { Card.new(:clubs, :ten) }
-    let(:other_top_card_false) { Card.new(:hearts, :five) }
+    let(:top_card_true) { Card.new(:clubs, :five) }
+    let(:top_card_false) { Card.new(:hearts, :five) }
+    
     it 'changes top card on valid play' do
-      pile.move_pile(other_pile_true)
-      expect(pile.top_card).to eq(other_top_card_true)
+      pile.move_pile(Pile.new(Card.new(:hearts, :ten), top_card_true))
+      expect(pile.top_card).to eq(top_card_true)
     end
 
     it 'rejects an invalid play' do
       expect do
-        pile.move_pile(other_pile_false)
+        pile.move_pile(Pile.new(Card.new(:clubs, :ten), top_card_false))
       end.to raise_error('invalid play')
     end
   end

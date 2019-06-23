@@ -127,81 +127,81 @@ describe AIPlayer do
     end
   end
 
-  # work in progress
-  # describe '#play_turn' do
-  #   let(:player) { AIPlayer.new(hand_cards) }
-  #   let(:pile1) { Pile.new(Card.new(:clubs, :five), Card.new(:clubs, :five)) }
-  #   let(:pile2) { Pile.new(Card.new(:hearts, :six), Card.new(:hearts, :six)) }
-  #   let(:piles) { [pile1, pile2] }
-  #   let(:deck) { Deck.new(deck_cards) }
+  ##### Work in progress #####
+  describe '#play_turn' do
+    let(:player) { AIPlayer.new(hand_cards) }
+    let(:pile1) { Pile.new(Card.new(:clubs, :five), Card.new(:clubs, :five)) }
+    let(:pile2) { Pile.new(Card.new(:hearts, :six), Card.new(:hearts, :six)) }
+    let(:piles) { [pile1, pile2] }
+    let(:deck) { Deck.new(deck_cards) }
 
-  #   context 'with playable card in hand' do
-  #     let(:hand_cards) { [Card.new(:diamonds, :four)] }
-  #     let(:deck_cards) { [Card.new(:spades, :queen)] }
+    # context 'with playable card in hand' do
+    #   let(:hand_cards) { [Card.new(:diamonds, :four)] }
+    #   let(:deck_cards) { [Card.new(:spades, :queen)] }
 
-  #     it 'plays a card out of its hand if possible' do
-  #       player.play_turn(piles, deck)
-  #       expect(player)
-  #         .to receive(:play_card)
-  #         .with(pile1, hand_cards[0])
-  #       expect(player)
-  #         .to receive(:play_pile)
-  #         .with(pile2, pile1)
-  #     end
-  #   end
+    #   it 'plays a card out of its hand if possible' do
+    #     player.play_turn(piles, deck)
+    #     expect(player)
+    #       .to receive(:play_card)
+    #       .with(pile1, hand_cards[0])
+    #     expect(player)
+    #       .to receive(:play_pile)
+    #       .with(pile2, pile1)
+    #   end
+    # end
 
-  #   context 'with no playable card in hand' do
-  #     let(:hand_cards) { [Card.new(:hearts, :four)] }
+    context 'with no playable card in hand' do
+      let(:hand_cards) { [Card.new(:hearts, :four)] }
 
-  #     let(:deck_cards) do
-  #       [Card.new(:hearts, :king),
-  #       Card.new(:hearts, :seven),
-  #       Card.new(:clubs, :four),
-  #       Card.new(:hearts, :three)]
-  #     end
+      let(:deck_cards) do
+        [Card.new(:hearts, :king),
+        Card.new(:hearts, :seven),
+        Card.new(:clubs, :four),
+        Card.new(:hearts, :three)]
+      end
 
-  #     it 'draws until it takes in a playable card' do
-  #       expect(player)
-  #         .to receive(:draw_from)
-  #         .with(deck)
-  #         .exactly(3)
-  #         .times
-  #         .and_call_original # calls the underlying `Player#draw_from`
+      it 'draws a card' do
+        expect(player)
+        .to receive(:draw_from)
+        .with(deck)
+        .exactly(1)
+        .times
+        .and_call_original # calls the underlying `Player#draw_from`
+        
+        player.play_turn(piles, deck)
+      end
+      
+      it 'does not draw if the player has won' do
+        player.cards.shift(1)
+        expect(player).to_not receive(:draw_from)
 
-  #       player.play_turn(pile, deck)
-  #     end
+        player.play_turn(piles, deck)
+      end
 
-  #     it 'plays the first drawn playable card' do
-  #       expect(player)
-  #         .to receive(:play_card)
-  #         .with(pile, deck_cards[2])
+      ##### Not needed. Just used for reference. #####
+      # context 'with no playable card in deck' do
+      #   let(:deck_cards) do
+      #     [Card.new(:hearts, :king),
+      #     Card.new(:hearts, :seven)]
+      #   end
 
-  #       player.play_turn(pile, deck)
-  #     end
+      #   it 'draws all cards into hand' do
+      #     expect(player)
+      #       .to receive(:draw_from)
+      #       .exactly(2)
+      #       .times.and_call_original
 
-  #     context 'with no playable card in deck' do
-  #       let(:deck_cards) do
-  #         [Card.new(:hearts, :king),
-  #         Card.new(:hearts, :seven)]
-  #       end
+      #     player.play_turn(pile, deck)
+      #   end
 
-  #       it 'draws all cards into hand' do
-  #         expect(player)
-  #           .to receive(:draw_from)
-  #           .exactly(2)
-  #           .times.and_call_original
+      #   it 'does not play a card' do
+      #     expect(player).not_to receive(:play_card)
 
-  #         player.play_turn(pile, deck)
-  #       end
-
-  #       it 'does not play a card' do
-  #         expect(player).not_to receive(:play_card)
-
-  #         player.play_turn(pile, deck)
-  #       end
-  #     end
-  #   end
-  # end
+      #     player.play_turn(pile, deck)
+      #   end
+      # end
+    end
+  end
 
   describe '#win?' do
     subject(:player) { AIPlayer.new([]) }

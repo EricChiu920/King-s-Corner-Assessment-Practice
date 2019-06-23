@@ -24,7 +24,7 @@ class AIPlayer
   def draw_from(deck)
   end
 
-  def play_turn(pile, deck)
+  def play_turn(piles, deck)
   end
 
   def win?

@@ -1,3 +1,9 @@
+DISCLAIMER:
+This is just one way of making the game. I've based this version mostly off of how
+crazy eights was designed. We could have many slight differences if another person
+coded their own version of the game. For example Daniel Keinan pointed out to me that
+we could instead just have an array instead of a first and top card.
+
 RULES
 
 1. The gameplay area starts with four foundation piles arranged on each side.

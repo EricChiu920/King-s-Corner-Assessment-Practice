@@ -207,4 +207,16 @@ describe AIPlayer do
       end
     end
   end
+
+  describe '#win?' do
+    subject(:player) { AIPlayer.new([]) }
+    it 'returns true when the hand is empty' do
+      expect(player.win?).to eq(true)
+    end
+
+    it 'returns false if hand is not empty' do
+      player.cards.concat(cards)
+      expect(player.win?).to eq(false)
+    end
+  end
 end

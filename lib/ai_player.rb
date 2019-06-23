@@ -1,3 +1,5 @@
+require 'byebug'
+
 class AIPlayer
   attr_reader :cards
 
@@ -23,6 +25,9 @@ class AIPlayer
   end
 
   def play_turn(pile, deck)
-
   end
+
+  def win?
+  end
+
 end

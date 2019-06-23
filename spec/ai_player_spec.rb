@@ -89,7 +89,9 @@ describe AIPlayer do
   describe '#choose_card' do
     subject(:player) { AIPlayer.new(cards) }
 
-    let(:pile) { double('pile') }
+    let(:pile1) { double('pile') }
+    let(:pile2) { double('pile') }
+    let(:piles) { [pile1, pile2] }
 
     context 'with a single card' do
       let(:cards) { [card] }
@@ -97,15 +99,16 @@ describe AIPlayer do
 
       it 'choose a legal card if possible' do
         # **must call `valid_play?` in `choose_card`**
-        allow(pile).to receive(:valid_play?).with(card).and_return(true)
+        allow(pile1).to receive(:valid_play?).with(card).and_return(true)
 
-        expect(player.choose_card(pile)).to eq(card)
+        expect(player.choose_card(piles)).to eq(card)
       end
 
       it 'returns nil if no legal play is possible' do
-        allow(pile).to receive(:valid_play?).with(card).and_return(false)
+        allow(pile1).to receive(:valid_play?).with(card).and_return(false)
+        allow(pile2).to receive(:valid_play?).with(card).and_return(false)
 
-        expect(player.choose_card(pile)).to be_nil
+        expect(player.choose_card(piles)).to be_nil
       end
     end
   end

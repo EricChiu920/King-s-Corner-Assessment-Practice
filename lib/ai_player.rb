@@ -1,4 +1,4 @@
-class Player
+class AIPlayer
   attr_reader :cards
 
   def self.deal_player(deck)
@@ -8,6 +8,15 @@ class Player
   end
 
   def play_card(pile, card)
+  end
+
+  def play_pile(pile, other_pile)
+  end
+
+  def choose_card(pile)
+  end
+
+  def choose_pile(piles)
   end
 
   def draw_from(deck)

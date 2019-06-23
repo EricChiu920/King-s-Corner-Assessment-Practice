@@ -1,10 +1,10 @@
 require 'rspec'
-require 'player'
+require 'ai_player'
 require 'card'
 require 'deck'
 require 'pile'
 
-describe Player do
+describe AIPlayer do
   let(:cards) do
     [Card.new(:hearts, :five),
      Card.new(:diamonds, :four),
@@ -13,7 +13,7 @@ describe Player do
 
   describe '#initialize' do
     it 'sets the players initial cards' do
-      expect(Player.new(cards.dup).cards).to eq(cards)
+      expect(AIPlayer.new(cards.dup).cards).to eq(cards)
     end
   end
 
@@ -23,49 +23,58 @@ describe Player do
       cards = double('cards')
       expect(deck).to receive(:take).with(7).and_return(cards)
 
-      player = Player.deal_player(deck)
+      player = AIPlayer.deal_player(deck)
       expect(player.cards).to eq(cards)
     end
   end
 
   context 'with single card' do
-    subject(:player) { Player.new(cards) }
+    subject(:player) { AIPlayer.new(cards) }
     let(:cards) { [card] }
 
     let(:pile) { double('pile') }
+    let(:card) { Card.new(:spades, :three) }
 
-    context 'with non-eight' do
-      let(:card) { Card.new(:spades, :three) }
+    describe '#play_card' do
+      it 'plays normally' do
+        # **must call `play` on the Pile**
+        expect(pile).to receive(:play).with(card)
+        player.play_card(pile, card)
+      end
 
-      describe '#play_card' do
-        it 'plays normally' do
-          # **must call `play` on the Pile**
-          expect(pile).to receive(:play).with(card)
-          player.play_card(pile, card)
-        end
+      it 'card must be in your hand to play it' do
+        expect do
+          # create a card outside your hand.
+          other_card = Card.new(:spades, :ace)
+          player.play_card(pile, other_card)
+        end.to raise_error('cannot play card outside your hand')
+      end
 
-        it 'card must be in your hand to play it' do
-          expect do
-            # create a card outside your hand.
-            other_card = Card.new(:spades, :ace)
-            player.play_card(pile, other_card)
-          end.to raise_error('cannot play card outside your hand')
-        end
+      it 'removes card from hand' do
+        # let the Player call `Pile#play`, but don't actually do
+        # anything.
+        allow(pile).to receive(:play)
 
-        it 'removes card from hand' do
-          # let the Player call `Pile#play`, but don't actually do
-          # anything.
-          allow(pile).to receive(:play)
-
-          player.play_card(pile, card)
-          expect(player.cards).to_not include(card)
-        end
+        player.play_card(pile, card)
+        expect(player.cards).to_not include(card)
       end
     end
   end
 
+  describe '#play_pile' do
+    subject(:player) { AIPlayer.new(cards) }
+    let(:other_pile) { double('pile') }
+    let(:pile) { double('pile') }
+
+    it 'plays normally' do
+      # **must call `move_pile` on the Pile**
+      expect(pile).to receive(:move_pile).with(other_pile)
+      player.play_pile(pile, other_pile)
+    end
+  end
+
   describe '#draw_from' do
-    subject(:player) { Player.new([]) }
+    subject(:player) { AIPlayer.new([]) }
 
     it 'adds a card from the deck to hand' do
       card = Card.new(:clubs, :deuce)
@@ -78,7 +87,7 @@ describe Player do
   end
 
   describe '#choose_card' do
-    subject(:player) { Player.new(cards) }
+    subject(:player) { AIPlayer.new(cards) }
 
     let(:pile) { double('pile') }
 
@@ -123,13 +132,13 @@ describe Player do
           card == eight
         end
 
-        expect(Player.new(cards).choose_card(pile)).to eq(eight)
+        expect(AIPlayer.new(cards).choose_card(pile)).to eq(eight)
       end
     end
   end
 
   describe '#play_turn' do
-    let(:player) { Player.new(hand_cards) }
+    let(:player) { AIPlayer.new(hand_cards) }
     let(:pile) { Pile.new(Card.new(:clubs, :three)) }
     let(:deck) { Deck.new(deck_cards) }
 

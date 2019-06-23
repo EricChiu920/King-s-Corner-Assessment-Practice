@@ -116,14 +116,14 @@ describe AIPlayer do
   describe '#choose_pile' do
     subject(:player) { AIPlayer.new(cards) }
 
-    let(:pile1) { Pile.new(Card.new(:clubs, :six), Card.new(:clubs, :six)) }
-    let(:pile2) { Pile.new(Card.new(:hearts, :five), Card.new(:hearts, :five)) }
+    let(:pile1) { Pile.new(Card.new(:hearts, :five), Card.new(:hearts, :five)) }
+    let(:pile2) { Pile.new(Card.new(:clubs, :six), Card.new(:clubs, :six)) }
     let(:piles) { [pile1, pile2] }
     let(:card) { Card.new(:clubs, :deuce) }
 
     it 'should move a pile if it can go on top of a another pile' do
       allow(pile2).to receive(:valid_play?).with(pile1.first_card).and_return(true)
-      expect(player.choose_pile(piles)).to eq([pile1, pile2])
+      expect(player.choose_pile(piles)).to eq([pile2, pile1])
     end
   end
 

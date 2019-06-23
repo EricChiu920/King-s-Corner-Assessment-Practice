@@ -108,33 +108,6 @@ describe AIPlayer do
         expect(player.choose_card(pile)).to be_nil
       end
     end
-
-    context 'with a choice between eight and non-eight' do
-      let(:cards) { [eight, non_eight] }
-
-      let(:eight) { Card.new(:diamonds, :eight) }
-      let(:non_eight) { Card.new(:hearts, :three) }
-
-      it 'does not play eights ahead of any other option' do
-        # either play is valid
-        allow(pile).to receive(:valid_play?).and_return(true)
-
-        cards.permutation.each do |cards|
-          # no matter the order, must not play eight
-          player = Player.new(cards)
-
-          expect(player.choose_card(pile)).to eq(non_eight)
-        end
-      end
-
-      it 'plays an eight if there is no choice' do
-        allow(pile).to receive(:valid_play?) do |card|
-          card == eight
-        end
-
-        expect(AIPlayer.new(cards).choose_card(pile)).to eq(eight)
-      end
-    end
   end
 
   describe '#play_turn' do

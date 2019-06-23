@@ -15,7 +15,7 @@ class AIPlayer
   def play_pile(pile, other_pile)
   end
 
-  def choose_card(pile)
+  def choose_card(piles)
   end
 
   def choose_pile(piles)

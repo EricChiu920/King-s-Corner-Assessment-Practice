@@ -30,7 +30,12 @@ describe Pile do
   end
 
   describe '#valid_play?' do
-    it 'approves playing a card that has both the immediate lower value and is a opposite color suit' do
+  it 'approves playing a card that has both the immediate lower value and is a opposite color suit' do
+    expect(pile.valid_play?(Card.new(:diamonds, :ten))).to eq(true)
+  end
+  
+  it 'approves any card when the pile is empty' do
+      pile.top_card = nil
       expect(pile.valid_play?(Card.new(:diamonds, :ten))).to eq(true)
     end
 
@@ -71,10 +76,17 @@ describe Pile do
   describe '#move_pile' do
     let(:top_card_true) { Card.new(:clubs, :five) }
     let(:top_card_false) { Card.new(:hearts, :five) }
+    let(:other_pile) {Pile.new(Card.new(:hearts, :ten), Card.new(:hearts, :ten))}
     
     it 'changes top card on valid play' do
       pile.move_pile(Pile.new(Card.new(:hearts, :ten), top_card_true))
       expect(pile.top_card).to eq(top_card_true)
+    end
+
+    it 'sets the other pile to empty' do
+      pile.move_pile(other_pile)
+      expect(other_pile.top_card).to eq(nil)
+      expect(other_pile.first_card).to eq(nil)
     end
 
     it 'rejects an invalid play' do

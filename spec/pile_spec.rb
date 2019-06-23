@@ -23,9 +23,9 @@ describe Pile do
     end
   end
 
-  describe '#current_suit' do
-    it 'returns the top card suit (for non-eights)' do
-      expect(pile.current_suit).to eq(top_card.suit)
+  describe '#suit_color' do
+    it 'returns the top card suit color' do
+      expect(pile.suit_color).to eq(:black)
     end
   end
 

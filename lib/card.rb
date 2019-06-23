@@ -67,6 +67,14 @@ class Card
     CARD_VALUE[value]
   end
 
+  def suit_color
+    if self.suit == :spades || self.suit == :clubs
+      :black
+    else
+      :red
+    end
+  end
+
   # Compares two cards to see if they're equal in suit & value.
   def ==(other)
     return false if other.nil?

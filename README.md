@@ -14,4 +14,10 @@ RULES
   - Move a full pile onto another pile(must maintain the solitaire pattern)
   - Play a King onto an empty corner pile
 6. A player takes as many actions as they can on their turn
-7. They end their turn by drawing a card from the top of the draw deck.  
+7. They end their turn by drawing a card from the top of the draw deck.
+
+Recommended order
+
+1. deck
+2. pile
+3. player

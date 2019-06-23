@@ -7,7 +7,7 @@ class Pile
   def current_value
   end
 
-  def current_suit
+  def current_suit_color
   end
 
   def valid_play?(card)

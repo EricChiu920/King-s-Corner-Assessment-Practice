@@ -25,7 +25,7 @@ describe Pile do
 
   describe '#suit_color' do
     it 'returns the top card suit color' do
-      expect(pile.suit_color).to eq(:black)
+      expect(pile.current_suit_color).to eq(:black)
     end
   end
 

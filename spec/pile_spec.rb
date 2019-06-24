@@ -30,11 +30,11 @@ describe Pile do
   end
 
   describe '#valid_play?' do
-  it 'approves playing a card that has both the immediate lower value and is a opposite color suit' do
-    expect(pile.valid_play?(Card.new(:diamonds, :ten))).to eq(true)
-  end
+    it 'approves playing a card that has both the immediate lower value and is a opposite color suit' do
+      expect(pile.valid_play?(Card.new(:diamonds, :ten))).to eq(true)
+    end
   
-  it 'approves any card when the pile is empty' do
+    it 'approves any card when the pile is empty' do
       pile.top_card = nil
       expect(pile.valid_play?(Card.new(:diamonds, :ten))).to eq(true)
     end
@@ -42,7 +42,7 @@ describe Pile do
     it 'rejects a card that has a higher value' do
       expect(
         pile.valid_play?(Card.new(:hearts, :king))
-      )
+      ).to eq(false)
     end
 
     it 'rejects a card that does not have the immediate lower value' do
@@ -54,7 +54,7 @@ describe Pile do
     it 'rejects a card that does not have a opposite color suit' do
       expect(
         pile.valid_play?(Card.new(:spades, :ten))
-      )
+      ).to eq(false)
     end
   end
 

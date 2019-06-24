@@ -27,3 +27,4 @@ Recommended order
 1. deck
 2. pile
 3. player
+4. king_pile
